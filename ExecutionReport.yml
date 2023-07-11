@@ -2,7 +2,7 @@
 - name: Create scheduled task to copy files
   hosts: all
   vars: 
-    report_dir: "./home/training/reports/"
+    report_dir: "/home/training/reports/"
 
   tasks:
     # | ConvertTo-Json
