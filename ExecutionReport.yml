@@ -5,14 +5,14 @@
   tasks:
     
     - name: Get scheduled task info
-      win_shell: Get-ScheduledTaskInfo -TaskName "<NAME OF TASK>" | ConvertTo-Json
+      win_shell: Get-ScheduledTaskInfo -TaskName "\Copy archived logs to server" | ConvertTo-Json
       register: task_info
 
-#    - name: Convert Information
-#      set_fact:
-#        task_info: "{{ task_info | from_json }}"
-#        var_date_now: "{{ ansible_date_time.iso8601 }}"
-#    
+    - name: Convert Information
+      set_fact:
+        task_info: "{{ task_info | from_json }}"
+        var_date_now: "{{ ansible_date_time.iso8601 }}"
+   
 #    - name: Write task info to file
 #      copy:
 #        content: |
