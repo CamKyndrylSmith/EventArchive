@@ -8,34 +8,34 @@
       win_shell: Get-ScheduledTaskInfo -TaskName "<NAME OF TASK>" | ConvertTo-Json
       register: task_info
 
-    - name: Convert Information
-      set_fact:
-        task_info: "{{ task_info | from_json }}"
-        var_date_now: "{{ ansible_date_time.iso8601 }}"
-    
-    - name: Write task info to file
-      copy:
-        content: |
-          <tr>
-            <td>{{ ansible_hostname }}</td>
-            <td>{{ task_info.LastRunTime }}</td>
-            <td>{{ task_info.LastTaskResult }}</td>
-          </tr>
-        dest: "{ansible_hostname}_Report.htmlsegment"  
-      delegate_to: localhost
-
-    - name: Inserted provided delimiter in between each fragment
-      assemble:
-        src: /
-        dest: /LogReport.html
-        #delimiter: '### START FRAGMENT ###'
-      regex: .*htmlsegment
-      run_once: true
-      delegate_to: localhost
-
-    - name: Read template and 
-      set_fact:
-        summary_results:  "{{ lookup('file', './LogReport.html') }}"
-        summart_:  "{{ lookup('template', './Template.html') }}"
+#    - name: Convert Information
+#      set_fact:
+#        task_info: "{{ task_info | from_json }}"
+#        var_date_now: "{{ ansible_date_time.iso8601 }}"
+#    
+#    - name: Write task info to file
+#      copy:
+#        content: |
+#          <tr>
+#            <td>{{ ansible_hostname }}</td>
+#            <td>{{ task_info.LastRunTime }}</td>
+#            <td>{{ task_info.LastTaskResult }}</td>
+#          </tr>
+#        dest: "{ansible_hostname}_Report.htmlsegment"  
+#      delegate_to: localhost
+#
+#    - name: Inserted provided delimiter in between each fragment
+#      assemble:
+#        src: /
+#        dest: /LogReport.html
+#        #delimiter: '### START FRAGMENT ###'
+#      regex: .*htmlsegment
+#      run_once: true
+#      delegate_to: localhost
+#
+#    - name: Read template and 
+#      set_fact:
+#        summary_results:  "{{ lookup('file', './LogReport.html') }}"
+#        summart_:  "{{ lookup('template', './Template.html') }}"
 
       
