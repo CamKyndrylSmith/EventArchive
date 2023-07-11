@@ -13,11 +13,11 @@
       debug: 
         msg: "{{ task_info }}"
 
-#   - name: Convert Information
-#     set_fact:
-#       task_info: "{{ task_info | from_json }}"
-#       var_date_now: "{{ ansible_date_time.iso8601 }}"
-#  
+    - name: Convert Information
+      set_fact:
+        task_Dict: "{{ task_info | from_json }}"
+        var_date_now: "{{ ansible_date_time.iso8601 }}"
+   
 #    - name: Write task info to file
 #      copy:
 #        content: |
