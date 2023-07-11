@@ -3,9 +3,9 @@
   hosts: all
    
   tasks:
-    
+    # | ConvertTo-Json
     - name: Get scheduled task info
-      win_shell: Get-ScheduledTaskInfo -TaskName "\Copy archived logs to server" | ConvertTo-Json
+      win_shell: Get-ScheduledTaskInfo -TaskName "\Copy archived logs to server" 
       register: task_info
     
     # Test debug command 
