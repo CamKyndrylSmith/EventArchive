@@ -14,9 +14,9 @@
         register: task_stat
 
     # Test debug command 
-    - name: "Debug output"
-      debug:
-        msg: "{{ task_stat }}"
+#    - name: "Debug output"
+#      debug:
+#        msg: "{{ task_stat }}"
 
     - name: Convert Information
       set_fact:
