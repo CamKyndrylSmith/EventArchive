@@ -15,7 +15,7 @@
 
     # Test debug command 
     - name: "Debug output"
-      debug: 
+      debug:
         msg: "{{ task_stat }}"
 
     - name: Convert Information
