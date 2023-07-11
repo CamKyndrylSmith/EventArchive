@@ -19,6 +19,7 @@
     - name: "Debug output"
       debug:
         msg: "{{ taskStat.state.last_run_time }}  | {{ taskStat.state.last_task_result }}"
+        msg: "{{ report_dir }}"
 
     - name: Write task info to file
       copy:
