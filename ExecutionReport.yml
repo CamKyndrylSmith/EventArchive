@@ -4,14 +4,19 @@
    
   tasks:
     # | ConvertTo-Json
-    - name: Get scheduled task info
-      win_shell: Get-ScheduledTaskInfo -TaskName "\Copy archived logs to server" 
-      register: task_info
+    #- name: Get scheduled task info
+    #  win_shell: Get-ScheduledTaskInfo -TaskName "\Copy archived logs to server" 
+    #  register: task_info
     
+    - name: Get information about a task in the root folder
+      win_scheduled_task_stat:
+        name: "Copy archived logs to server"
+        register: task_stat
+
     # Test debug command 
     - name: "Debug output"
       debug: 
-        msg: "{{ task_info }}"
+        msg: "{{ task_stat }}"
 
     - name: Convert Information
       set_fact:
