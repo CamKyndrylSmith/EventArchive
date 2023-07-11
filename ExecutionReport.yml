@@ -18,26 +18,16 @@
       debug:
         msg: "{{ taskStat.state.last_run_time }}  | {{ taskStat.state.last_task_result }}"
 
-#    - name: Convert Information
-#      set_fact:
-#        task_Dict: "{{ taskStat | from_json }}"
-#        var_date_now: "{{ ansible_date_time.iso8601 }}"
-    
-    # Test debug command 
-#    - name: "Debug output"
-#      debug: 
-#        msg: "{{ taskStat.LastRunTime }}"
-
-#    - name: Write task info to file
-#      copy:
-#        content: |
-#          <tr>
-#            <td>{{ ansible_hostname }}</td>
-#            <td>{{ task_info.LastRunTime }}</td>
-#            <td>{{ task_info.LastTaskResult }}</td>
-#          </tr>
-#        dest: "{ansible_hostname}_Report.htmlsegment"  
-#      delegate_to: localhost
+    - name: Write task info to file
+      copy:
+        content: |
+          <tr>
+            <td>{{ ansible_hostname }}</td>
+            <td>{{ taskStat.state.last_run_time }}</td>
+            <td>{{ taskStat.state.last_task_result }}</td>
+          </tr>
+        dest: "{ansible_hostname}_Report.htmlsegment"  
+      delegate_to: localhost
 #
 #    - name: Inserted provided delimiter in between each fragment
 #      assemble:
