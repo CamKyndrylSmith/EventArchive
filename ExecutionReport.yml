@@ -16,17 +16,17 @@
     # Test debug command 
     - name: "Debug output"
       debug:
-        msg: "{{ taskStat }}"
+        msg: "{{ taskStat.LastRunTime }}"
 
     - name: Convert Information
       set_fact:
-        task_Dict: "{{ taskStat | from_json }}"
+      #  task_Dict: "{{ taskStat | from_json }}"
         var_date_now: "{{ ansible_date_time.iso8601 }}"
     
     # Test debug command 
-    - name: "Debug output"
-      debug: 
-        msg: "{{ task_Dict.LastRunTime }}"
+#    - name: "Debug output"
+#      debug: 
+#        msg: "{{ taskStat.LastRunTime }}"
 
 #    - name: Write task info to file
 #      copy:
