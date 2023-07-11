@@ -11,7 +11,7 @@
     - name: Get information about a task in the root folder
       win_scheduled_task_stat:
         name: "Copy archived logs to server"
-        register: taskStat
+      register: taskStat
 
     # Test debug command 
     - name: "Debug output"
