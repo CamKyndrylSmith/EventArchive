@@ -28,7 +28,7 @@
             <td>{{ taskStat.state.last_run_time }}</td>
             <td>{{ taskStat.state.last_task_result }}</td>
           </tr>
-        dest: "{report_dir}{ansible_hostname}_Report.htmlsegment"  
+        dest: "{{report_dir}}{{ansible_hostname}}_Report.htmlsegment"  
       delegate_to: localhost
 #
 #    - name: Inserted provided delimiter in between each fragment
