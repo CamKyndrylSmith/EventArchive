@@ -11,7 +11,7 @@
     # Test debug command 
     - name: "Debug output"
       debug: 
-      msg: "{{ task_info }}"
+        msg: "{{ task_info }}"
 
 #   - name: Convert Information
 #     set_fact:
