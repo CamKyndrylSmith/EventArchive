@@ -1,7 +1,9 @@
 ---
 - name: Create scheduled task to copy files
   hosts: all
-   
+  vars: 
+    report_dir: "/home/training/reports/"
+
   tasks:
     # | ConvertTo-Json
     #- name: Get scheduled task info
@@ -26,7 +28,7 @@
             <td>{{ taskStat.state.last_run_time }}</td>
             <td>{{ taskStat.state.last_task_result }}</td>
           </tr>
-        dest: "{ansible_hostname}_Report.htmlsegment"  
+        dest: "{report_dir}{ansible_hostname}_Report.htmlsegment"  
       delegate_to: localhost
 #
 #    - name: Inserted provided delimiter in between each fragment
