@@ -1,8 +1,7 @@
 ---
 - name: Create scheduled task to copy files
   hosts: all
-  vars: 
-    report_dir: "/home/training/reports/"
+  
 
   tasks:
     # | ConvertTo-Json
@@ -14,13 +13,7 @@
       win_scheduled_task_stat:
         name: "Copy archived logs to server"
       register: taskStat
-
-    # Test debug command 
-    - name: "Debug output"
-      debug:
-        msg: "{{ taskStat.state.last_run_time }}  | {{ taskStat.state.last_task_result }}"
-        
-
+  
     - name: Write task info to file
       copy:
         content: "<tr><td>{{ ansible_hostname }}</td><td>{{ taskStat.state.last_run_time }}</td><td>{{ taskStat.state.last_task_result }}</td></tr>"
@@ -36,17 +29,16 @@
       debug:
         msg: "{{ file_content.stdout }}"
 
-    - name: Inserted provided delimiter in between each fragment
+    - name: Combine htmlsegment files
       assemble:
         src: /
-        dest: /LogReport.html
-        #delimiter: '### START FRAGMENT ###'
+        dest: LogReport.html
         regexp: ([a-zA-Z0-9\s_\\.\-\(\):])+(.htmlsegment)$
       run_once: true
       delegate_to: localhost
 
     - name: "Read a file content"
-      shell: cat /LogReport.html
+      shell: cat LogReport.html
       register: file_content
       delegate_to: localhost
 
