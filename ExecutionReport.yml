@@ -29,17 +29,17 @@
             <td>{{ taskStat.state.last_run_time }}</td>
             <td>{{ taskStat.state.last_task_result }}</td>
           </tr>
-        dest: "tmp/{{ansible_hostname}}_Report.htmlsegment"  
+        dest: "{{ansible_hostname}}_Report.htmlsegment"  
       delegate_to: localhost
-#
-#    - name: Inserted provided delimiter in between each fragment
-#      assemble:
-#        src: /
-#        dest: /LogReport.html
-#        #delimiter: '### START FRAGMENT ###'
-#      regex: .*htmlsegment
-#      run_once: true
-#      delegate_to: localhost
+
+    - name: Inserted provided delimiter in between each fragment
+      assemble:
+        src: /
+        dest: /LogReport.html
+        #delimiter: '### START FRAGMENT ###'
+      regex: .*htmlsegment
+      run_once: true
+      delegate_to: localhost
 #
 #    - name: Read template and 
 #      set_fact:
