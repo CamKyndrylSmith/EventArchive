@@ -50,7 +50,7 @@
       
     - name: Set variables for email body template 
       set_fact:
-        var_date_now: "{{ ansible_date_time.iso8601 }}"
+        var_date_now: "{{ ansible_date_time.date }} {{ ansible_date_time.time }}"
         overall_status: "Good"
         schedul_data: "{{ lookup('file', 'LogReport.html') }}"        
       run_once: true
