@@ -37,7 +37,7 @@
         src: /
         dest: /LogReport.html
         #delimiter: '### START FRAGMENT ###'
-      regex: .*htmlsegment
+        regex: .*htmlsegment
       run_once: true
       delegate_to: localhost
 #
