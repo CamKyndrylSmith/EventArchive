@@ -52,8 +52,7 @@
       set_fact:
         var_date_now: "{{ ansible_date_time.iso8601 }}"
         overall_status: "Good"
-        schedul_data: "{{ lookup('file', '/tmp/MyTest/Html_DDC.txt') }}"
-        file_PVS: "{{ lookup('file', 'LogReport.html') }}"        
+        schedul_data: "{{ lookup('file', 'LogReport.html') }}"        
       run_once: true
       delegate_to: localhost
       
