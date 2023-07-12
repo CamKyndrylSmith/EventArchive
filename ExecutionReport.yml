@@ -47,9 +47,51 @@
       debug:
         msg: "{{ file_content.stdout }}" 
       run_once: true
-#    - name: Read template and 
-#      set_fact:
-#        summary_results:  "{{ lookup('file', './LogReport.html') }}"
-#        summart_:  "{{ lookup('template', './Template.html') }}"
+      
+    - name: Set variables for email body template 
+      set_fact:
+        var_date_now: "{{ ansible_date_time.iso8601 }}"
+        overall_status: "Good"
+        schedul_data: "{{ lookup('file', '/tmp/MyTest/Html_DDC.txt') }}"
+        file_PVS: "{{ lookup('file', 'LogReport.html') }}"        
+      run_once: true
+      delegate_to: localhost
+      
+    # Read template and combine with the variables before
+    - name: Read template and combine with the variables before
+      set_fact:
+        email_body: "{{ lookup('template', 'templates/EmailBodyHtml.j2') }}"
+      run_once: true
+      delegate_to: localhost
+      
+    # Write file to server
+    - name:
+      copy:
+        content: "{{ email_body }}"
+        dest: "EmailBody_{{ var_date_now }}.html"
+      delegate_to: localhost
+      run_once: true
+
+    - name: "Read a file content"
+      shell: "cat EmailBody_{{ var_date_now }}.html"
+      register: file_content
+      delegate_to: localhost
+
+    - name: "Print the file content to a console"
+      debug:
+        msg: "{{ file_content.stdout }}"
+
+    # Email report
+#    - name: Email information
+#      mail:
+#        host: ????????
+#        port: 25
+#        to: "{{ destination_email }}"
+#        from: ansible@kyndryl.com
+#        subject: "Event Log Archive Report - {{ file_Summary }}"
+#        body: "Server status - {{ file_Summary }}"
+#        attach: "/tmp/MyTest/Citrix_Status_{{ var_date_now }}.html"
+#      delegate_to: localhost
+#      run_once: true
 
       
