@@ -40,12 +40,13 @@
     - name: "Read a file content"
       shell: cat LogReport.html
       register: file_content
+      run_once: true
       delegate_to: localhost
 
     - name: "Print the file content to a console"
       debug:
         msg: "{{ file_content.stdout }}" 
-#
+      run_once: true
 #    - name: Read template and 
 #      set_fact:
 #        summary_results:  "{{ lookup('file', './LogReport.html') }}"
