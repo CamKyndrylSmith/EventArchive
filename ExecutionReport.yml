@@ -23,12 +23,7 @@
 
     - name: Write task info to file
       copy:
-        content: |
-          <tr>
-            <td>{{ ansible_hostname }}</td>
-            <td>{{ taskStat.state.last_run_time }}</td>
-            <td>{{ taskStat.state.last_task_result }}</td>
-          </tr>
+        content: "<tr><td>{{ ansible_hostname }}</td><td>{{ taskStat.state.last_run_time }}</td><td>{{ taskStat.state.last_task_result }}</td></tr>"
         dest: "{{ansible_hostname}}_Report.htmlsegment"  
       delegate_to: localhost
 
