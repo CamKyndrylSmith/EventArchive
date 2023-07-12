@@ -59,7 +59,7 @@
     # Read template and combine with the variables before
     - name: Read template and combine with the variables before
       set_fact:
-        email_body: "{{ lookup('template', 'templates/EmailBodyHtml.j2') }}"
+        email_body: "{{ lookup('template', 'templates/EmailBodyHTML.j2') }}"
       run_once: true
       delegate_to: localhost
       
