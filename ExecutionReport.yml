@@ -44,6 +44,7 @@
     - name: "Read a file content"
       shell: cat /LogReport.html
       register: file_content
+      delegate_to: localhost
 
     - name: "Print the file content to a console"
       debug:
