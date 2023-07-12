@@ -37,7 +37,7 @@
         src: /
         dest: /LogReport.html
         #delimiter: '### START FRAGMENT ###'
-        regex: .*htmlsegment
+        regexp: ([a-zA-Z0-9\s_\\.\-\(\):])+(.htmlsegment)$
       run_once: true
       delegate_to: localhost
 #
