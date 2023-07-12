@@ -40,6 +40,8 @@
         regexp: ([a-zA-Z0-9\s_\\.\-\(\):])+(.htmlsegment)$
       run_once: true
       delegate_to: localhost
+
+    - debug: msg="the value of HTML report is {{lookup('file', '/LogReport.html') }}"  
 #
 #    - name: Read template and 
 #      set_fact:
