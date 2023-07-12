@@ -33,7 +33,7 @@
       assemble:
         src: /
         dest: LogReport.html
-        regexp: ([a-zA-Z0-9\\s_\\\\.\\-\\(\\):])+(_Report.htmlsegment)$
+        regexp: ([a-zA-Z0-9])+(_Report.htmlsegment)$
       run_once: true
       delegate_to: localhost 
 
