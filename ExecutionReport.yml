@@ -41,7 +41,13 @@
       run_once: true
       delegate_to: localhost
 
-    - debug: msg="the value of HTML report is {{lookup('file', '/LogReport.html') }}"  
+    - name: "Read a file content"
+      shell: cat /LogReport.html
+      register: file_content
+
+    - name: "Print the file content to a console"
+      debug:
+        msg: "{{ file_content.stdout }}" 
 #
 #    - name: Read template and 
 #      set_fact:
