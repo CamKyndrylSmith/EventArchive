@@ -1,5 +1,11 @@
 ---
-- name: Create scheduled task to copy files
+# -------------------------------------------------------#
+#   Delete Schdule Task 
+#
+# This will remove the copy archived logs task from 
+# windows scheduler.
+# -------------------------------------------------------#
+- name: Create a report of event log archive schedule tasks
   hosts: all
   
 
@@ -20,15 +26,6 @@
         dest: "{{ansible_hostname}}_Report.htmlsegment"  
       delegate_to: localhost
 
-    - name: "Read a file content"
-      shell: cat "{{ansible_hostname}}_Report.htmlsegment"
-      register: file_content
-      delegate_to: localhost
-
-    - name: "Print the file content to a console"
-      debug:
-        msg: "{{ file_content.stdout }}"
-
     - name: Combine htmlsegment files
       assemble:
         src: "./"
@@ -37,17 +34,6 @@
       run_once: true
       delegate_to: localhost 
 
-    - name: "Read a file content"
-      shell: cat LogReport.html
-      register: file_content
-      run_once: true
-      delegate_to: localhost
-
-    - name: "Print the file content to a console"
-      debug:
-        msg: "{{ file_content.stdout }}" 
-      run_once: true
-      
     - name: Set variables for email body template 
       set_fact:
         var_date_now: "{{ ansible_date_time.date }} {{ ansible_date_time.time }}"

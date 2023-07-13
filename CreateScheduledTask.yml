@@ -1,36 +1,50 @@
 ---
+# -------------------------------------------------------#
+#   Create Schdule Task 
+#
+# This will create a schedule task to copy archived logs 
+# to the NETAPP storage array.
+# -------------------------------------------------------#
 - name: Create scheduled task to copy files
   hosts: all
    
   tasks:
-    
-    - name: Copy file from playbook
-      win_copy:
-        src: UploadArchive.ps1
-        dest: c:\Temp\UploadArchive.ps1
-    
-    - name: Create scheduled task
-      win_scheduled_task:
-        name: Copy archived logs to server
-        description: "Scheduled task created by Ansible"
-        actions:
-        - path: powershell.exe
-          arguments: >
-            -File "C:\Temp\UploadArchive.ps1"
-            -SourcePath "c:\Temp\Source"
-            -Destination "C:\Temp\Dest"
-            -StorageUser "training"
-            -PasswordFile "C:\Temp\Credential.enc" 
-        state: present
-        enabled: yes
-        triggers:
-        - type: registration
-          repetition:
-            interval: PT1M
-            #duration: PT5M
-            stop_at_duration_end: yes
-        username: "{{ ansible_user }}"
-        password: "{{ ansible_password }}"
-        logon_type: password
-        hidden: yes
-      #no_log: True
+
+    # Generate random minute   
+    - name: set fact here
+      set_fact:
+        random_min: "{{ 59 | random }}"
+      run_once: yes    
+
+    - name: "Print the random minute out"
+      debug:
+        msg: "{{ random_min }}" 
+      run_once: true
+
+#    - name: Copy file from playbook
+#      win_copy:
+#        src: UploadArchive.ps1
+#        dest: c:\Temp\UploadArchive.ps1
+#    
+#    - name: Create scheduled task
+#      win_scheduled_task:
+#        name: Copy archived logs to server
+#        description: "Scheduled task created by Ansible"
+#        actions:
+#        - path: powershell.exe
+#          arguments: >
+#            -File "C:\Temp\UploadArchive.ps1"
+#            -SourcePath "c:\Temp\Source"
+#            -Destination "C:\Temp\Dest"
+#            -StorageUser "training"
+#            -PasswordFile "C:\Temp\Credential.enc" 
+#        state: present
+#        enabled: yes
+#        triggers:
+#        - type: daily
+#          start_boundary: ""
+#        username: "{{ ansible_user }}"
+#        password: "{{ ansible_password }}"
+#        logon_type: password
+#        hidden: yes
+#      #no_log: True

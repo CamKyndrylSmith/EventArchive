@@ -1,0 +1,18 @@
+---
+# -------------------------------------------------------#
+#   Delete Schdule Task 
+#
+# This will remove the copy archived logs task from 
+# windows scheduler.
+# -------------------------------------------------------#
+- name: Delete scheduled task to copy archive files
+  hosts: all
+  gather_facts: false
+   
+  tasks:
+    # Remove task schedule        
+    - name: Delete scheduled task
+      win_scheduled_task:
+        name: Copy archived logs to server
+        state: absent
+        
