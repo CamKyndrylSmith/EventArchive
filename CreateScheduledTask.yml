@@ -13,12 +13,12 @@
     # Generate random minute   
     - name: set fact here
       set_fact:
-        random_min: "{{ 59 | random }}"
+        random_min: "{{ '%02d' | format( 59 | random) }}"
       run_once: yes    
 
     - name: "Print the random minute out"
       debug:
-        msg: "{{ random_min }}" 
+        msg: "2023-07-13T23:{{ random_min }}:00" 
       run_once: true
 
 #    - name: Copy file from playbook
