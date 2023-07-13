@@ -11,14 +11,14 @@
   tasks:
 
     # Generate random minute   
-    - name: set fact here
+    - name: Create random minute value 2 digits 
       set_fact:
-        random_min: "{{ '%02d' | format( 59 | random) }}"
+        random_min: "2023-07-13T23:{{ '%02d' | format( 59 | random) }}:00"
       run_once: yes    
 
     - name: "Print the random minute out"
       debug:
-        msg: "2023-07-13T23:{{ random_min }}:00" 
+        msg: "{{ random_min }}" 
       run_once: true
 
 #    - name: Copy file from playbook
