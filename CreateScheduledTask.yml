@@ -27,7 +27,7 @@
         name: "Copy archived logs to server"
       register: taskStat
 
-    - name: "Print the file content to a console"
+    - name: "Print out if schedule exist"
       debug:
         msg: "{{ taskStat.task_exists }}"
 
