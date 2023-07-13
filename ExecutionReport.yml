@@ -1,19 +1,14 @@
 ---
 # -------------------------------------------------------#
-#   Delete Schdule Task 
+#   Excution Report 
 #
-# This will remove the copy archived logs task from 
-# windows scheduler.
+# This will produce a report on the event log archive 
+# upload schedule tasks.
 # -------------------------------------------------------#
 - name: Create a report of event log archive schedule tasks
   hosts: all
   
-
   tasks:
-    # | ConvertTo-Json
-    #- name: Get scheduled task info
-    #  win_shell: Get-ScheduledTaskInfo -TaskName "\Copy archived logs to server" 
-    #  register: task_info
     
     - name: Get information about a task in the root folder
       win_scheduled_task_stat:

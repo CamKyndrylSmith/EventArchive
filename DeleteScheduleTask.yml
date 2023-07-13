@@ -15,4 +15,3 @@
       win_scheduled_task:
         name: Copy archived logs to server
         state: absent
-        
