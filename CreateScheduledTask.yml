@@ -31,31 +31,32 @@
       debug:
         msg: "{{ taskStat.task_exists }}"
 
-#    # Remove task schedule        
-#    - name: Delete scheduled task
-#      win_scheduled_task:
-#        name: Copy archived logs to server
-#        state: absent
-#
-#    # Create a windows schedule task to run the upload script
-#    - name: Create scheduled task
-#      win_scheduled_task:
-#        name: Copy archived logs to server
-#        description: "Scheduled task created by Ansible"
-#        actions:
-#        - path: powershell.exe
-#          arguments: >
-#            -File "C:\Temp\UploadArchive.ps1"
-#            -SourcePath "c:\Temp\Source"
-#            -Destination "C:\Temp\Dest"
-#            -StorageUser "training"
-#            -PasswordFile "C:\Temp\Credential.enc" 
-#        state: present
-#        enabled: yes
-#        triggers:
-#        - type: daily
-#          start_boundary: "{{ random_min }}"
-#        username: "{{ ansible_user }}"
-#        password: "{{ ansible_password }}"
-#        logon_type: password
-#        hidden: yes
+    # Remove task schedule        
+    - name: Delete scheduled task
+      win_scheduled_task:
+        name: Copy archived logs to server
+        state: absent
+      when: taskStat.task_exists == true
+
+    # Create a windows schedule task to run the upload script
+    - name: Create scheduled task
+      win_scheduled_task:
+        name: Copy archived logs to server
+        description: "Scheduled task created by Ansible"
+        actions:
+        - path: powershell.exe
+          arguments: >
+            -File "C:\Temp\UploadArchive.ps1"
+            -SourcePath "c:\Temp\Source"
+            -Destination "C:\Temp\Dest"
+            -StorageUser "training"
+            -PasswordFile "C:\Temp\Credential.enc" 
+        state: present
+        enabled: yes
+        triggers:
+        - type: daily
+          start_boundary: "{{ random_min }}"
+        username: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        logon_type: password
+        hidden: yes
