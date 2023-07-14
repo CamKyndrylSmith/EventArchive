@@ -7,6 +7,8 @@
 # -------------------------------------------------------#
 - name: Create a report of event log archive schedule tasks
   hosts: all
+    var: 
+      destination_email: ""
   
   tasks:
     
@@ -44,22 +46,10 @@
       run_once: true
       delegate_to: localhost
       
-    # Write file to server
-    - name:
-      copy:
-        content: "{{ email_body }}"
-        dest: "EmailBody_{{ var_date_now }}.html"
-      delegate_to: localhost
-      run_once: true
-
-    - name: "Read a file content"
-      shell: "cat EmailBody_{{ var_date_now }}.html"
-      register: file_content
-      delegate_to: localhost
-
+    # Debug write out 
     - name: "Print the file content to a console"
       debug:
-        msg: "{{ file_content.stdout }}"
+        msg: "{{ email_body }}"
 
     # Email report
 #    - name: Email information
@@ -68,10 +58,7 @@
 #        port: 25
 #        to: "{{ destination_email }}"
 #        from: ansible@kyndryl.com
-#        subject: "Event Log Archive Report - {{ file_Summary }}"
-#        body: "Server status - {{ file_Summary }}"
-#        attach: "/tmp/MyTest/Citrix_Status_{{ var_date_now }}.html"
+#        subject: "Event Log Archive Report - {{ var_date_now }}"
+#        body: "{{ email_body }}"
 #      delegate_to: localhost
 #      run_once: true
-
-      

@@ -9,7 +9,6 @@
   hosts: all
    
   tasks:
-
     # Generate random minute   
     - name: Create start time with a random minute value 2 digits after 11 pm
       set_fact:
@@ -22,16 +21,13 @@
         src: UploadArchive.ps1
         dest: c:\Temp\UploadArchive.ps1
     
+    # Get information so the schedule task so we can see if it already exists 
     - name: Get information about a task in the root folder
       win_scheduled_task_stat:
         name: "Copy archived logs to server"
       register: taskStat
 
-    - name: "Print out if schedule exist"
-      debug:
-        msg: "{{ taskStat.task_exists }}"
-
-    # Remove task schedule        
+    # Remove task schedule if it exists        
     - name: Delete scheduled task
       win_scheduled_task:
         name: Copy archived logs to server
