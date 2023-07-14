@@ -7,7 +7,7 @@
 # -------------------------------------------------------#
 - name: Create a report of event log archive schedule tasks
   hosts: all
-    var: 
+  vars: 
       destination_email: ""
   
   tasks:
