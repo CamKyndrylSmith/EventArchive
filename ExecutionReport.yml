@@ -12,16 +12,39 @@
   
   tasks:
     
+
     - name: Get information about a task in the root folder
       win_scheduled_task_stat:
         name: "Copy archived logs to server"
       register: taskStat
-  
+    
+    - name: Set overall status if good 
+      set_fact:
+        overall_status: "Good"
+      run_once: true
+      delegate_to: localhost
+      when: taskStat.state.last_task_result == 0 
+
+    - name: Set overall status if bad
+      set_fact:
+        overall_status: "Bad"
+      run_once: true
+      delegate_to: localhost
+      when: taskStat.state.last_task_result != 0 
+
     - name: Write task info to file
       copy:
-        content: "<tr><td>{{ ansible_hostname }}</td><td>{{ taskStat.state.last_run_time }}</td><td>{{ taskStat.state.last_task_result }}</td></tr>"
+        content: "<tr class='goodData'><td>{{ ansible_hostname }}</td><td>{{ taskStat.state.last_run_time }}</td><td>{{ taskStat.state.last_task_result }}</td></tr>"
         dest: "{{ansible_hostname}}_Report.htmlsegment"  
       delegate_to: localhost
+      when: taskStat.state.last_task_result == 0 
+
+    - name: Write task info to file
+      copy:
+        content: "<tr class='badData'><td>{{ ansible_hostname }}</td><td>{{ taskStat.state.last_run_time }}</td><td>{{ taskStat.state.last_task_result }}</td></tr>"
+        dest: "{{ansible_hostname}}_Report.htmlsegment"  
+      delegate_to: localhost
+      when: taskStat.state.last_task_result != 0 
 
     - name: Combine htmlsegment files
       assemble:
