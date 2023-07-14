@@ -1,3 +1,12 @@
+#-------------------------------------------------------------------------------------------------------------"
+#   Upload Archive
+#
+#  This powershell copies archive event log files to file system for storage. 
+#         0   - Sucessful
+#         1   - Error
+#         10  - No Drive letters avaible to map
+#
+#-------------------------------------------------------------------------------------------------------------"
 param(
   $SourcePath,
   $Destination,
@@ -15,7 +24,7 @@ try {
   # Go through drives and check if it is being used
   Foreach ($drvletter in "ABDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray()) {
     # Check if the drive is being used. If yes go to next letter
-    if(Get-Volume -FilePath "$drvletter:\"){ continue }
+    if(Get-Volume -FilePath $drvletter":\"){ continue }
     
     # Temporarily map drive
     New-PSDrive -Name $drvletter -PSProvider FileSystem -Root $Destination -Credential $credential
