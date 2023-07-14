@@ -7,19 +7,34 @@
 # -------------------------------------------------------#
 - name: Create scheduled task to copy files
   hosts: all
-   
+  vars: 
+    kyndryl_folder: C:\KYNDRYL\
+
   tasks:
     # Generate random minute   
     - name: Create start time with a random minute value 2 digits after 11 pm
       set_fact:
-        random_min: "2023-07-13T23:{{ '%02d' | format( 59 | random) }}:00"
+        random_min: "2023-07-13T23:{{ '%02d' | format( 59 | random ) }}:00"
       run_once: yes    
+
+    # Check for the Temp folder to store scripts in
+    - name: Kyndryl folder check
+      stat:
+        path: "{{ kyndryl_folder }}"
+      register: folder_check
+
+    # Create temp folder if it does not exist
+    - name: Create directory structure
+      win_file:
+        path: "{{ kyndryl_folder }}"
+        state: directory
+      when: folder_check.stat.exists
 
     # Copy upload archive powershell script to server
     - name: Copy file from playbook
       win_copy:
         src: UploadArchive.ps1
-        dest: c:\Temp\UploadArchive.ps1
+        dest: "{{ kyndryl_folder }}UploadArchive.ps1"
     
     # Get information so the schedule task so we can see if it already exists 
     - name: Get information about a task in the root folder
@@ -42,11 +57,11 @@
         actions:
         - path: powershell.exe
           arguments: >
-            -File "C:\Temp\UploadArchive.ps1"
-            -SourcePath "c:\Temp\Source"
-            -Destination "C:\Temp\Dest"
+            -File ""{{ kyndryl_folder }}"\UploadArchive.ps1"
+            -SourcePath ""{{ kyndryl_folder }}"Source"
+            -Destination ""{{ kyndryl_folder }}"Dest"
             -StorageUser "training"
-            -PasswordFile "C:\Temp\Credential.enc" 
+            -PasswordFile ""{{ kyndryl_folder }}"Credential.enc" 
         state: present
         enabled: yes
         triggers:
