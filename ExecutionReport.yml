@@ -10,8 +10,7 @@
   vars: 
       destination_email: ""
   
-  tasks:
-    
+  tasks:    
 
     - name: Get information about a task in the root folder
       win_scheduled_task_stat:
