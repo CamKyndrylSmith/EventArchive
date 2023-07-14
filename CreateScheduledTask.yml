@@ -8,7 +8,7 @@
 - name: Create scheduled task to copy files
   hosts: all
   vars: 
-    kyndryl_folder: C:\KYNDRYL\
+    kyndryl_folder: 'C:\KYNDRYL\'
 
   tasks:
     # Generate random minute   
@@ -24,11 +24,11 @@
       register: folder_check
 
     # Create temp folder if it does not exist
-    - name: Create directory structure
+    - name: Create directory structure if it does not exist
       win_file:
         path: "{{ kyndryl_folder }}"
         state: directory
-      when: folder_check.stat.exists
+      when: folder_check.stat.exists == false
 
     # Copy upload archive powershell script to server
     - name: Copy file from playbook
