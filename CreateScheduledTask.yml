@@ -8,7 +8,7 @@
 - name: Create scheduled task to copy files
   hosts: all
   vars: 
-    kyndryl_folder: 'C:\KYNDRYL\'
+    kyndryl_folder: 'C:\Kyndryl\'
 
   tasks:
     # Generate random minute   
