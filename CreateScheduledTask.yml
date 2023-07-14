@@ -19,7 +19,7 @@
 
     # Check for the Temp folder to store scripts in
     - name: Kyndryl folder check
-      stat:
+      win_stat:
         path: "{{ kyndryl_folder }}"
       register: folder_check
 
