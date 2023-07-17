@@ -8,12 +8,13 @@
 - name: Create scheduled task to copy files
   hosts: all
   vars: 
-    kyndryl_folder: 'C:\Kyndryl\'           # Location script stored on server
-    source_folder: ''                       # Local folder location that contains event log archive files
-    destination_folder: ''                  # Remote folder destination for archive event log files 
-    upload_script: 'UploadArchive.ps1'      # Uploader powershell script to be scheduled
-    storage_user: 'training'                # User to run script
-
+    kyndryl_folder: 'C:\Kyndryl\'                           # Location script stored on server
+    source_folder: 'C:\Windows\System32\winevt\Logs'        # Local folder location that contains event log archive files
+    dest_folder: 'C:\Windows\System32\winevt\Logs'          # Remote folder destination for archive event log files 
+    upload_script: 'UploadArchive.ps1'                      # Uploader powershell script to be scheduled
+    storage_user: 'training'                                # User to run script
+    cred_file: 'Credential.enc'                             # File containing encrypted password
+    
   tasks:
     # Generate random minute   
     - name: Create start time with a random minute value 2 digits after 11 pm
@@ -62,10 +63,10 @@
         - path: powershell.exe
           arguments: >
             -File ""{{ kyndryl_folder }}{{ upload_script }}"
-            -SourcePath ""{{ source_folder }}"Source"
-            -Destination ""{{ destination_folder }}"Dest"
+            -SourcePath ""{{ source_folder }}"
+            -Destination ""{{ dest_folder }}"
             -StorageUser "{{ storage_user }}"
-            -PasswordFile ""{{ kyndryl_folder }}"Credential.enc" 
+            -PasswordFile ""{{ kyndryl_folder }}{{ cred_file }} 
         state: present
         enabled: yes
         triggers:
