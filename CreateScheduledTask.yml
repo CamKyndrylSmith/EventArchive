@@ -8,7 +8,11 @@
 - name: Create scheduled task to copy files
   hosts: all
   vars: 
-    kyndryl_folder: 'C:\Kyndryl\'
+    kyndryl_folder: 'C:\Kyndryl\'           # Location script stored on server
+    source_folder: ''                       # Local folder location that contains event log archive files
+    destination_folder: ''                  # Remote folder destination for archive event log files 
+    upload_script: 'UploadArchive.ps1'      # Uploader powershell script to be scheduled
+    storage_user: 'training'                # User to run script
 
   tasks:
     # Generate random minute   
@@ -33,8 +37,8 @@
     # Copy upload archive powershell script to server
     - name: Copy file from playbook
       win_copy:
-        src: UploadArchive.ps1
-        dest: "{{ kyndryl_folder }}UploadArchive.ps1"
+        src: "{{ upload_script }}"
+        dest: "{{ kyndryl_folder }}{{ upload_script }}"
     
     # Get information so the schedule task so we can see if it already exists 
     - name: Get information about a task in the root folder
@@ -57,10 +61,10 @@
         actions:
         - path: powershell.exe
           arguments: >
-            -File ""{{ kyndryl_folder }}"\UploadArchive.ps1"
-            -SourcePath ""{{ kyndryl_folder }}"Source"
-            -Destination ""{{ kyndryl_folder }}"Dest"
-            -StorageUser "training"
+            -File ""{{ kyndryl_folder }}{{ upload_script }}"
+            -SourcePath ""{{ source_folder }}"Source"
+            -Destination ""{{ destination_folder }}"Dest"
+            -StorageUser "{{ storage_user }}"
             -PasswordFile ""{{ kyndryl_folder }}"Credential.enc" 
         state: present
         enabled: yes

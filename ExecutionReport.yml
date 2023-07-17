@@ -11,43 +11,53 @@
       destination_email: "?????"
   
   tasks:    
-    # Initiate the over status
-    - name: Set overall status if good 
-      set_fact:
-        overall_status: "Good"
-        color_row: "goodData"
-      run_once: true
-      delegate_to: localhost  
+
+    # Get information so the schedule task so we can see if it already exists 
+    - name: Get information about a task in the root folder
+      win_scheduled_task_stat:
+        name: "Copy archived logs to server"
+      register: taskStat
     
+#      when: 
+
     # Get the windows schedule stats 
     - name: Get information about a task in the root folder
       win_scheduled_task_stat:
         name: "Copy archived logs to server"
       register: taskStat
     
-    # Check if the schedule last result not successful 
+    # Build data if the schedule task does not exists  
     - name: Set overall status if bad
       set_fact:
         overall_status: "Bad"
-        color_row: "badData"
+        file_data: "<tr class='badData'><td>{{ ansible_hostname }}</td><td colspan=2>No Schedule Task exists to upload archives.</td></tr>"
       delegate_to: localhost
-      when: taskStat.state.last_task_result != 0 
+      when: taskStat.task_exists == false
+
+    # Build data if the schedule last result not successful 
+    - name: Set overall status if bad
+      set_fact:
+        overall_status: "Bad"
+        file_data: "<tr class='badData'><td>{{ ansible_hostname }}</td><td>{{ taskStat.state.last_run_time }}</td><td>{{ taskStat.state.last_task_result }}</td></tr>"
+      delegate_to: localhost
+      when: taskStat.state.last_task_result != 0 and taskStat.task_exists == true
     
-    #  
+     # build data if the schedule last result was successful 
+    - name: Set overall status if bad
+      set_fact:
+        overall_status: "Good"
+        file_data: "<tr class='goodData'><td>{{ ansible_hostname }}</td><td>{{ taskStat.state.last_run_time }}</td><td>{{ taskStat.state.last_task_result }}</td></tr>"
+      delegate_to: localhost
+      when: taskStat.state.last_task_result == 0 and taskStat.task_exists == true
+
+    # Create a result file for host 
     - name: Write task info to file
       copy:
-        content: "<tr class='{{ color_row }}'><td>{{ ansible_hostname }}</td><td>{{ taskStat.state.last_run_time }}</td><td>{{ taskStat.state.last_task_result }}</td></tr>"
+        content: "{{ file_data }}"
         dest: "{{ansible_hostname}}_Report.htmlsegment"  
       delegate_to: localhost
-      
-    # 
- #   - name: Write task info to file
- #     copy:
- #       content: "<tr class='badData'><td>{{ ansible_hostname }}</td><td>{{ taskStat.state.last_run_time }}</td><td>{{ taskStat.state.last_task_result }}</td></tr>"
- #       dest: "{{ansible_hostname}}_Report.htmlsegment"  
- #     delegate_to: localhost
- #     when: taskStat.state.last_task_result != 0 
-    # 
+     
+    # Combine all host results into one HTML file 
     - name: Combine htmlsegment files
       assemble:
         src: "./"
@@ -55,7 +65,8 @@
         regexp: .*_Report.htmlsegment
       run_once: true
       delegate_to: localhost 
-    # 
+    
+    # Setup data for the email body
     - name: Set variables for email body template 
       set_fact:
         var_date_now: "{{ ansible_date_time.date }} {{ ansible_date_time.time }}"

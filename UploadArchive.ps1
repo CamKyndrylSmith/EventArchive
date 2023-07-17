@@ -32,8 +32,8 @@ try {
     # Get all files in folder than end with .evtv
     Get-ChildItem -Path $SourcePath -Filter "*.evtx" | ForEach-Object {
       # Create folder of server name, if it doesn't exist.
-      If(!(test-path -PathType container "A:\$($env:computername)\")) {
-        New-Item -ItemType Directory -Path "A:\$($env:computername)\"
+      If(!(test-path -PathType container $drvletter":\$($env:computername)\")) {
+        New-Item -ItemType Directory -Path $drvletter":\$($env:computername)\"
       }
       
       # Copy file to remote folder
