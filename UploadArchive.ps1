@@ -37,7 +37,7 @@ try {
       }
       
       # Copy file to remote folder
-      Move-Item -Path $_.FullName -Destination "A:\$($env:computername)\$($_.Name)"
+      Move-Item -Path $_.FullName -Destination $drvletter":\$($env:computername)\$($_.Name)"
     }
   
     # Remove drive
