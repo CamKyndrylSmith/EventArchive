@@ -11,15 +11,7 @@
       destination_email: "?????"
   
   tasks:    
-
-    # Get information so the schedule task so we can see if it already exists 
-    - name: Get information about a task in the root folder
-      win_scheduled_task_stat:
-        name: "Copy archived logs to server"
-      register: taskStat
     
-#      when: 
-
     # Get the windows schedule stats 
     - name: Get information about a task in the root folder
       win_scheduled_task_stat:
@@ -30,7 +22,7 @@
     - name: Set overall status if bad
       set_fact:
         overall_status: "Bad"
-        file_data: "<tr class='badData'><td>{{ ansible_hostname }}</td><td colspan=2>No Schedule Task exists to upload archives.</td></tr>"
+        file_data: "<tr class='badData'><td>{{ ansible_hostname }}</td><td colspan=2>No Schedule Task exists to upload event log archives.</td></tr>"
       delegate_to: localhost
       when: taskStat.task_exists == false
 
