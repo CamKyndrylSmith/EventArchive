@@ -1,9 +1,15 @@
 ---
-# -------------------------------------------------------#
-#   Delete related upload files and schedule 
+# -----------------------------------------------------------------#
+#   ProjectClean  
 #
-# This will remove 
-# -------------------------------------------------------#
+# This playbook will remove all schedule tasks and related  
+# files for the windows eventlog archive project. 
+#        + Create Encrypted File - Schedule Task
+#        + Copy archived logs to server - Schedule Task
+#        + UploadArchive.ps1 - Powershell script
+#        + CreateEncryptedFile.ps1 - Powershell script
+#        + Credential.enc - Encrypted password file
+# ----------------------------------------------------------------#
 - name: Delete scheduled task to copy archive files
   hosts: all
   gather_facts: false

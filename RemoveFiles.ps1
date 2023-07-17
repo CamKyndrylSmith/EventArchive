@@ -30,7 +30,7 @@ Else {
     Write-host "New File '$LogFile' Created!" -f Green
 }
 
-Add-Content -Path $LogFile -Value "`n`t`t --- Event Log archive delete -- `n`t`t Today:  $DisplayNow"
+Add-Content -Path $LogFile -Value "`n`t`t --- Event Log archive delete (-$Days days) --- `n`t`t`tToday:  $DisplayNow `n _____________________________________________________________________"
 
 #----- Get files based on lastwrite filter and specified folder ---#
 $Files = Get-Childitem -Path $Targetfolder -include $Extension -Recurse | Where-Object { !$_.PSIsContainer -and $_.CreationTime -lt $Lastwrite}
@@ -41,10 +41,12 @@ if ($Files.Count -gt 0)
 {         
     foreach ($File in $Files)
     {
+         
         if ($null -ne $File)
         {
             write-host "Deleted File $File " -backgroundcolor "DarkRed"
-            Add-Content -Path $LogFile -Value "`t Deleted File: $File "
+            $crDate = $File.CreationTime
+            Add-Content -Path $LogFile -Value "  Deleted File: $File `t Creation date: $crDate "
             Remove-item $File.Fullname | out-null
         }
     }
