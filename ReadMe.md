@@ -15,20 +15,21 @@
 >| storage_password | None | **Mandatory** This password string is required to create the creditals for running this upload process.  
 
 >### Upload schedule creation 
->**CreatTask.yml** This playbook will create a windows task schedule that will run the *UploadArchive.ps1* PowerShell script. The Schedule Task time will be a random time between 11pm and midnight >that will run daily. In the setup step the creation of the encrypted *Credential.enc* will be used as the credentials of the server user that will run the Schedule task.  
+>**CreateTask.yml** This playbook will create a windows task schedule that will run the *UploadArchive.ps1* PowerShell script. The Schedule Task time will be a random time between >11pm and midnight that will run daily. In the setup step the creation of the encrypted *Credential.enc* will be used as the credentials of the server user that will run the Schedule >task.  
 >#### Variables
 >| Variable | Default  | Comment |
 >| --- | ---  | --- |
->| storage_password | None | **Mandatory** This password string is required to create the creditals for running this upload process.
+>|  
 
 >### Execution Report
 >**ExecutionReport.yml** This playbook will check the create schedule task on all hosts and produce an execution report email.
 >#### Variables
 >| Variable | Default  | Comment |
 >| --- | ---  | --- |
->| storage_password | None | **Mandatory** This password string is required to create the creditals for running this upload process.
+>|  
 >### 180 day clean up
 >**RemoveFiles.ps1** This is a PowerShell script which removes any archive files that have a creation date greater than 180 days. The script will produce a deletion report.
+
 >#### Variables
 >| Variable | Default  | Comment |
 >| --- | ---  | --- |
@@ -37,7 +38,6 @@
 >| $Targetfolder | C:\Logs | Define folder where archive event logs files are located 
 >| $Extension | *.evntx | Define extension of file to be removed 
 >| $LogDir | C:\Logs | Log file location   
-
 
 >### Clean Project
 >**ProjectClean.yml** This ansible playbook can be run to clean up the related Scheduled Tasks and files, that are created for this project.
