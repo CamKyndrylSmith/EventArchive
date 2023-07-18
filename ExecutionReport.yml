@@ -79,6 +79,7 @@
         msg: "{{ email_body }}"
       run_once: true
       delegate_to: localhost
+      
     # Email report
 #    - name: Email information
 #      mail:

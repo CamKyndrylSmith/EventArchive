@@ -4,16 +4,18 @@
 #
 # This will create a schedule task to copy archived logs 
 # to the NETAPP storage array.
+#
+#   IMPORTANT - VARABLE 
 # -------------------------------------------------------#
 - name: Create scheduled task to copy files
   hosts: all
   vars: 
-    kyndryl_folder: 'C:\Kyndryl\'                           # Location script stored on server
-    source_folder: 'C:\Windows\System32\winevt\Logs'        # Local folder location that contains event log archive files
-    dest_folder: 'C:\temp\PretendStorageArray'              # Remote folder destination for archive event log files 
-    upload_script: 'UploadArchive.ps1'                      # Uploader powershell script to be scheduled
-    storage_user: 'training'                                # User to run script
-    cred_file: 'Credential.enc'                             # File containing encrypted password
+    kyndryl_folder: 'C:\Kyndryl\'                                   # Location script stored on server
+    source_folder: 'C:\Windows\System32\winevt\Logs'                # Local folder location that contains event log archive files
+    dest_folder: '\\tdlbkpprod0201.melb.ad\wineventlogs_nonprod\'   # Remote folder destination for archive event log files 
+    upload_script: 'UploadArchive.ps1'                              # Uploader powershell script to be scheduled
+    storage_user: 'windowslogging'                                  # User to access Netapp storage 
+    cred_file: 'Credential.enc'                                     # File containing encrypted password
 
   tasks:
     # Generate random minute   

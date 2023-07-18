@@ -1,9 +1,9 @@
 ---
 # -------------------------------------------------------#
-#   Create encrypted file of password
+#   Create Remove file Schedule
 #
-# This will create encrypted password file for the archive
-# upload script.
+# This will create encrypted password file for the remove 
+# file Schedule Task
 # -------------------------------------------------------#
 - name: Create encrypted file of password
   hosts: all
@@ -12,8 +12,12 @@
     kyndryl_folder: 'C:\Kyndryl\'                   # Temp location to run script from
     password_file: 'Credential.enc'                 # File to store encrypted password in
     script_name: 'CreateEncryptedFile.ps1'          # Powershell script to create encrypted file
-    #storage_password: ''                           # Password string to convert
-
+    remove_script: 'RemoveFiles.ps1'                # Powershell script to create encrypted file
+    storage_user: ''                                # Password string to convert
+    storage_password: ''                            # Password string to convert
+    target_Folder: ''                               # Password string to convert
+    log_directory: ''                               # Password string to convert  
+ 
   tasks:
     # Check for the Temp folder to store scripts into exist
     - name: Kyndryl folder check
@@ -66,3 +70,38 @@
       win_scheduled_task:
         name: "Create Encrypted File"
         state: absent
+    
+    # Copy Remove File Powershell script
+    - name: Copy Powershell script 
+      win_copy:
+        src: "./{{ remove_script }}"
+        dest: "{{ kyndryl_folder }}{{ remove_script }}"
+
+    # Create a windows task schedule to create the encrypted file     
+    - name: Create scheduled task to run remove file script
+      win_scheduled_task:
+        name: "Remove "
+        description: "Scheduled task created by Ansible"
+        allow_demand_start: true
+        restart_count: 200
+        restart_interval: PT1M
+        run_level: highest
+        start_when_available: true
+        actions:
+        - path: powershell.exe
+          arguments: >
+            -File ""{{ kyndryl_folder }}{{ remove_script }}"
+            -Days "180"
+            -Targetfolder "{{ target_Folder}}"
+            -Extension "*.evtx"
+            -LogDir "{{ log_folder }}"
+            -StorageUser "{{ storage_user }}"
+        state: present
+        enabled: yes
+        triggers:
+        - type: daily
+          start_boundary: "2023-07-13T02:01:00"
+        username: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        logon_type: password
+      no_log: True 
