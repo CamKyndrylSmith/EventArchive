@@ -15,7 +15,11 @@
 >| storage_password | None | **Mandatory** This password string is required to create the creditals for running this upload process.  
 
 >### Upload schedule creation 
+<<<<<<< HEAD
 >**CreateTask.yml** This playbook will create a windows task schedule that will run the *UploadArchive.ps1* PowerShell script. The Schedule Task time will be a random time between >11pm and midnight that will run daily. In the setup step the creation of the encrypted *Credential.enc* will be used as the credentials of the server user that will run the Schedule >task.  
+=======
+>**CreateTask.yml** This playbook will create a windows task schedule that will run the *UploadArchive.ps1* PowerShell script. The Schedule Task time will be a random time between 11pm and midnight that will run daily. In the setup step the creation of the encrypted *Credential.enc* will be used as the credentials of the server user that will run the Schedule >task.  
+>>>>>>> 059e15b124ea0f9cc68dc1a6f305a614099e69cf
 >#### Variables
 >| Variable | Default  | Comment |
 >| --- | ---  | --- |

@@ -1,10 +1,13 @@
 ---
-# -------------------------------------------------------#
-#   Create Remove file Schedule
+# ------------------------------------------------------------------------------------------------#
+#   Create Remove file Schedule Task
 #
 # This will create encrypted password file for the remove 
 # file Schedule Task
-# -------------------------------------------------------#
+#
+#   IMPORTANT - VARABLE + 'env' - needs to be passed: dev,test or prod 
+#                       + 'storage_password' - is also require for central storage          
+# -----------------------------------------------------------------------------------------------#
 - name: Create encrypted file of password
   hosts: all
   gather_facts: false
@@ -13,12 +16,32 @@
     password_file: 'Credential.enc'                 # File to store encrypted password in
     script_name: 'CreateEncryptedFile.ps1'          # Powershell script to create encrypted file
     remove_script: 'RemoveFiles.ps1'                # Powershell script to create encrypted file
-    storage_user: ''                                # Password string to convert
-    storage_password: ''                            # Password string to convert
+    storage_user: 'windowslogging'                  # Password string to convert
     target_Folder: ''                               # Password string to convert
     log_directory: ''                               # Password string to convert  
  
   tasks:
+    # When Dev environment set destination folder   
+    - name: Set Dev destination folder
+      set_fact:
+        dest_folder: '\\tdlbkpprod0201.melb.ad\wineventlogs_nonprod\Dev'
+      run_once: yes
+      when: env == 'dev'
+    
+    # When Test environment set destination folder   
+    - name: Set Test destination folder
+      set_fact:
+        dest_folder: '\\tdlbkpprod0201.melb.ad\wineventlogs_nonprod\Test'
+      run_once: yes
+      when: env == 'test'
+
+      # When Prod environment set destination folder   
+    - name: Set Production destination folder
+      set_fact:
+        dest_folder: '\\tdlbkpprod0201.melb.ad\wineventlogs_prod'
+      run_once: yes
+      when: env == 'prod'
+
     # Check for the Temp folder to store scripts into exist
     - name: Kyndryl folder check
       win_stat:
@@ -80,7 +103,7 @@
     # Create a windows task schedule to create the encrypted file     
     - name: Create scheduled task to run remove file script
       win_scheduled_task:
-        name: "Remove "
+        name: "Maintain archive event logs"
         description: "Scheduled task created by Ansible"
         allow_demand_start: true
         restart_count: 200

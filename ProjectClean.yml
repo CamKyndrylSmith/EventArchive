@@ -17,6 +17,7 @@
     kyndryl_folder: 'C:\Kyndryl\'
     password_file: 'Credential.enc' 
     upload_file: 'UploadArchive.ps1'
+    remove_file: 'RemoveFiles.ps1'
 
   tasks:
     # Remove task schedule        
@@ -31,14 +32,26 @@
         name: "Create Encrypted File"
         state: absent
 
-    # Remove Powershell file 
-    - name: Remove Powershell file
+    # Remove task schedule        
+    - name: Delete scheduled task
+      win_scheduled_task:
+        name: "Maintain archive event logs"
+        state: absent    
+
+    # Remove Powershell create encrypte file 
+    - name: Remove Powershell create encrypte file
       win_file:
         path: "{{ kyndryl_folder }}{{ password_file }}"
         state: absent
     
-    # Remove Powershell file 
-    - name: Remove Powershell file
+    # Remove Powershell upload archive file 
+    - name: Remove Powershell upload archive file
       win_file:
         path: "{{ kyndryl_folder }}{{ upload_file }}"
         state: absent  
+
+    # Remove Powershell remove file
+    - name: Remove Powershell remove file
+      win_file:
+        path: "{{ kyndryl_folder }}{{ remove_file }}"
+        state: absent    
